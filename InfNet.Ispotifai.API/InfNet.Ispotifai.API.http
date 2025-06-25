@@ -1,0 +1,6 @@
+@InfNet.Ispotifai.API_HostAddress = http://localhost:5206
+
+GET {{InfNet.Ispotifai.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

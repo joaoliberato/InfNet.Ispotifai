@@ -1,0 +1,60 @@
+﻿@model HomeIndexModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    @if (Model.IsAuthenticated)
+    {
+        <p class="lead">You are authenticated as @Model.Email.</p>
+        @if (Model.UsuarioNovo)
+        {
+            <div class="alert alert-success" role="alert">
+                Usuário criado com sucesso!
+            </div>
+        }
+        @foreach (var item in Model.Favoritas)
+        {
+            @if (!item.Favorita)
+            {
+                <form method="post" action="/Home/AddFavorita" class="form-inline">
+                    <div class="form-group">
+                        <label for="favorita">@item.Nome</label>
+                        <label>@item.Nome</label>
+                        <label>@item.Artista</label>
+                        <label>@item.Album</label>
+                        <input type="hidden" name="IdMusica" value="@item.IdMusica" />
+                        <input type="hidden" name="IdUsuario" value="@Model.IdUsuario" />
+                        <button type="submit" class="btn btn-link">Adicionar aos favoritos</button>
+                    </div>
+                    <hr />
+                </form>
+            }
+            else
+            {
+                <form method="post" action="/Home/RemoveFavorita" class="form-inline">
+                    <div class="form-group">
+                        <label for="favorita">@item.Nome</label>
+                        <label>@item.Nome</label>
+                        <label>@item.Artista</label>
+                        <label>@item.Album</label>
+                        <input type="hidden" name="IdMusica" value="@item.IdMusica" />
+                        <input type="hidden" name="IdUsuario" value="@Model.IdUsuario" />
+                        <button type="submit" class="btn btn-link">Remover dos favoritos</button>
+                    </div>
+                    <hr />
+                </form>
+            }
+        }
+    }
+    else
+    {
+        <p class="lead">You are not authenticated.</p>
+        @Html.ActionLink("Login", "Login", "Account", null, new { @class = "btn btn-link" })
+
+    }
+
+
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>

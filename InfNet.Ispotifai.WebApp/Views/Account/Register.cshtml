@@ -1,0 +1,59 @@
+﻿@model RegisterModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    <div b-ytluoveji4="" class="container">
+        <main b-ytluoveji4="" role="main" class="pb-3">
+
+            <h1>Register</h1>
+
+            <div class="row">
+                <div class="col-md-4">
+
+                    <form asp-action="Register" method="post">
+                        <h2>Create a new account.</h2>
+                        <hr>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" type="email" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-required="The Email field is required." id="Input_Email" name="Email" value="@Model.Email">
+                            <label for="Input_Email">Email</label>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Input.Email" data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" type="password" data-val="true" data-val-length="The Password must be at least 6 and at max 100 characters long." data-val-length-max="100" data-val-length-min="6" data-val-required="The Password field is required." id="Input_Password" maxlength="100" name="Password"  value="@Model.Password">
+                            <label for="Input_Password">Password</label>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Input.Password" data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" type="password" data-val="true" data-val-equalto="The password and confirmation password do not match." data-val-equalto-other="*.Password" id="Input_ConfirmPassword" name="ConfirmPassword" value="@Model.ConfirmPassword">
+                            <label for="Input_ConfirmPassword">Confirm Password</label>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Input.ConfirmPassword" data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select" aria-required="true" id="plano" name="Plano">
+                                <option value="1">Básico (R$19,90)</option>
+                                <option value="2">Família (R$29,90)</option>
+                                <option value="3">Premium (R$39,90)</option>
+                            </select>
+                            <label for="plano">Plano</label>
+                        </div>
+
+                        @foreach (var item in Model.Erros)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @item
+                            </div>
+                        }
+
+                        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8NFE_OUaaiVEh6-eccLxg5wNq6D5pX22cZZAZxpTI9lSB_o78vqMs_DbgX_lN77JclQl_Ma2KNQliQKlHZBF8PDd6ydjmEcqCU97YP39EK8Jc5R059abdPLxTOhT8U4AkrOfXXbcI8lyaqQjfmcFOyk" />
+
+                    </form>
+
+                </div>
+            </div>
+
+
+        </main>
+    </div>
+}
