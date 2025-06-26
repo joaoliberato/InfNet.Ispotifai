@@ -15,4 +15,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\InfNet.Ispotifai.Application\InfNet.Ispotifai.Application.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
-﻿namespace InfNet.Ispotifai.Domain
+﻿
+namespace InfNet.Ispotifai.Domain
 {
     public class Usuario
     {
@@ -6,7 +7,16 @@
         public string Email { get; set; }
         public string Senha { get; set; }
         public Plano Plano { get; set; }
-        public List<Musica> Favoritas { get; set; }
+        public List<Musica> Favoritas { get; set; } = [];
 
+        public void RemoveFavorita(int idMusica)
+        {
+            Favoritas.RemoveAll(m => m.IdMusica == idMusica);
+        }
+        public void AddFavorita(Musica musica)
+        {
+            Favoritas ??= [];
+            Favoritas.Add(musica);
+        }
     }
 }

@@ -1,5 +1,6 @@
-﻿using InfNet.Ispotifai.API.Dto.Response;
-using Microsoft.AspNetCore.Http;
+﻿using InfNet.Ispotifai.Application;
+using InfNet.Ispotifai.Application.Dto;
+using InfNet.Ispotifai.Domain.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InfNet.Ispotifai.API.Controllers
@@ -8,19 +9,50 @@ namespace InfNet.Ispotifai.API.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IMusicaRepository _musicaRepository;
+        public UsuarioController(IUsuarioRepository usuarioRepository, IMusicaRepository musicaRepository)
+        {
+            _usuarioRepository = usuarioRepository;
+            _musicaRepository = musicaRepository;
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            // Simulate fetching user data
-            return Ok(new UsuarioResponse
+            UsuarioDto usuario = new PerfilDoUsuarioService(_usuarioRepository, _musicaRepository).ObterPerfil(id);
+
+            return Ok(usuario);
+        }
+
+        [HttpDelete("{id}/favorita/{idMusica}")]
+        public IActionResult RemoverMusica(int id, int idMusica)
+        {
+            try
             {
-                Email = "teste@teste.com",
-                IdUsuario = id,
-                Favoritas = [
-                    new () { IdMusica = 1, Nome = "Música 1", Artista = "Artista 1", Favorita = false },
-                    new () { IdMusica = 2, Nome = "Música 2", Artista = "Artista 2", Favorita = true },
-                ]
-            });
+                new RemoverFavoritaService(_usuarioRepository, _musicaRepository)
+                     .RemoverFavorita(id, idMusica);
+                return Ok(new { message = "Música removida com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao remover música favorita: {ex.Message}");
+            }
+        }
+
+        [HttpPost("{id}/favorita/{idMusica}")]
+        public IActionResult AdicionarMusica(int id, int idMusica)
+        {
+            try
+            {
+                new AdicionarFavoritaService(_usuarioRepository, _musicaRepository)
+                     .AdicionarFavorita(id, idMusica);
+                return Ok(new { message = "Música adicionada com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao adicionar música favorita: {ex.Message}");
+            }
         }
     }
 }

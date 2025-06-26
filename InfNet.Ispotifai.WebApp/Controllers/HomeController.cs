@@ -57,5 +57,29 @@ namespace InfNet.Ispotifai.WebApp.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpPost]
+        public IActionResult AddFavorita(int idUsuario, int idMusica)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = client.PostAsync($"http://localhost:5206/api/Usuario/{idUsuario}/Favorita/{idMusica}", null).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", new { id = idUsuario });
+            }
+            return View("Error", new ErrorViewModel { RequestId = "Erro ao adicionar música favorita." });
+        }
+
+        [HttpPost]
+        public IActionResult RemoveFavorita(int idUsuario, int idMusica)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = client.DeleteAsync($"http://localhost:5206/api/Usuario/{idUsuario}/Favorita/{idMusica}").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", new { id = idUsuario });
+            }
+            return View("Error", new ErrorViewModel { RequestId = "Erro ao remover música favorita." });
+        }
     }
 }

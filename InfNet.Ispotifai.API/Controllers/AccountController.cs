@@ -1,4 +1,6 @@
 ﻿using InfNet.Ispotifai.API.Dto.Request;
+using InfNet.Ispotifai.Application;
+using InfNet.Ispotifai.Domain.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
@@ -9,31 +11,35 @@ namespace InfNet.Ispotifai.API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IPlanoRepository _planoRepository;
+        public AccountController(IUsuarioRepository usuarioRepository, IPlanoRepository planoRepository)
+        {
+            _usuarioRepository = usuarioRepository;
+            _planoRepository = planoRepository;
+        }
+
         [HttpPost("Register")]
         public IActionResult Register([FromBody] RegisterRequest request)
         {
-            bool emailValido = !string.IsNullOrEmpty(request.Email) &&
-                Regex.IsMatch(request.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-
-            bool senhasIguais = !string.IsNullOrEmpty(request.Password) &&
-                request.Password == request.ConfirmPassword;
-            bool planoValido = request.Plano > 0;
-            if (!emailValido || !senhasIguais || !planoValido)
+            CadastrarUsuarioService cadastrarUsuarioService = new CadastrarUsuarioService(_usuarioRepository, _planoRepository);
+            var idUsuario = 0;
+            try
             {
-                return BadRequest("Dados inválidos. Verifique o email, as senhas e o plano.");
+                idUsuario = cadastrarUsuarioService.CadastrarUsuario(request.Email, request.Password, request.ConfirmPassword, request.Plano);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao cadastrar usuário: {ex.Message}");
             }
 
-            // Simulação de registro bem-sucedido
-            int idUsuario = new Random().Next(1, 1000); // Simula um ID de usuário gerado
             return Ok(idUsuario);
         }
 
         [HttpPost("Login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            // Simulação de registro bem-sucedido
-            int idUsuario = new Random().Next(1, 1000); // Simula um ID de usuário gerado
-            return Ok(idUsuario);
+            return Ok(new LoginService(_usuarioRepository).Login(request.Email, request.Password));
         }
     }
 }
