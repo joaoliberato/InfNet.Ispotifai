@@ -13,8 +13,16 @@ namespace InfNet.Ispotifai.Infrastructure
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Usuario>()
+                .HasKey(u => u.IdUsuario);
+
             modelBuilder.Entity<Usuario>()
                 .HasMany(u => u.Favoritas)
                 .WithMany();
@@ -27,6 +35,9 @@ namespace InfNet.Ispotifai.Infrastructure
 
             modelBuilder.Entity<Musica>()
                 .HasKey(m => m.IdMusica);
+
+            modelBuilder.Entity<Plano>()
+                .HasKey(p => p.IdPlano);
 
 
             base.OnModelCreating(modelBuilder);

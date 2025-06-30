@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InfNet.Ispotifai.Application\InfNet.Ispotifai.Application.csproj" />
+    <ProjectReference Include="..\InfNet.Ispotifai.Domain\InfNet.Ispotifai.Domain.csproj" />
+    <ProjectReference Include="..\InfNet.Ispotifai.Infrastructure\InfNet.Ispotifai.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

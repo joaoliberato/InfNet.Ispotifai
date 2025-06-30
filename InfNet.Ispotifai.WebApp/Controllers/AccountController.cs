@@ -1,16 +1,17 @@
 ﻿using InfNet.Ispotifai.WebApp.Dto.Request;
 using InfNet.Ispotifai.WebApp.Models;
+using InfNet.Ispotifai.WebApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InfNet.Ispotifai.WebApp.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IspotifaiApiClient _apiClient;
 
-        public AccountController(IHttpClientFactory httpClientFactory)
+        public AccountController(IspotifaiApiClient apiClient)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiClient = apiClient;
         }
 
         public IActionResult Login()
@@ -25,12 +26,11 @@ namespace InfNet.Ispotifai.WebApp.Controllers
         [HttpPost]
         public IActionResult Login(LoginModel model)
         {
-            var client = _httpClientFactory.CreateClient();
-            var result = client.PostAsJsonAsync("http://localhost:5206/api/Account/Login", new LoginRequest
+            HttpResponseMessage? result = _apiClient.Login(new LoginRequest
             {
                 Email = model.Email,
                 Password = model.Password
-            }).Result;
+            });
 
             if (!result.IsSuccessStatusCode)
             {
@@ -46,15 +46,13 @@ namespace InfNet.Ispotifai.WebApp.Controllers
         [HttpPost]
         public IActionResult Register(RegisterModel model)
         {
-            var client = _httpClientFactory.CreateClient();
-
-            var result = client.PostAsJsonAsync("http://localhost:5206/api/Account/Register", new RegisterRequest
+            HttpResponseMessage? result = _apiClient.Register(new RegisterRequest
             {
                 Email = model.Email,
                 Password = model.Password,
                 ConfirmPassword = model.ConfirmPassword,
                 Plano = model.Plano
-            }).Result;
+            });
 
             if (!result.IsSuccessStatusCode)
             {

@@ -1,26 +1,24 @@
 using System.Diagnostics;
 using InfNet.Ispotifai.WebApp.Dto.Response;
 using InfNet.Ispotifai.WebApp.Models;
+using InfNet.Ispotifai.WebApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InfNet.Ispotifai.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IspotifaiApiClient _apiClient;
 
-
-        public HomeController(IHttpClientFactory httpClientFactory)
+        public HomeController(IspotifaiApiClient apiClient)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiClient = apiClient;
         }
-
 
         private HomeIndexModel GetHomeIndexModel(int id)
         {
+            UsuarioResponse response = _apiClient.GetUsuarioById(id);
             var result = new HomeIndexModel();
-            UsuarioResponse response = _httpClientFactory.CreateClient()
-                .GetFromJsonAsync<UsuarioResponse>($"http://localhost:5206/api/Usuario/{id}").Result;
 
             if (response is null)
             {
@@ -61,8 +59,7 @@ namespace InfNet.Ispotifai.WebApp.Controllers
         [HttpPost]
         public IActionResult AddFavorita(int idUsuario, int idMusica)
         {
-            var client = _httpClientFactory.CreateClient();
-            var response = client.PostAsync($"http://localhost:5206/api/Usuario/{idUsuario}/Favorita/{idMusica}", null).Result;
+            HttpResponseMessage? response = _apiClient.AddFavorita(idUsuario, idMusica);
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", new { id = idUsuario });
@@ -73,8 +70,8 @@ namespace InfNet.Ispotifai.WebApp.Controllers
         [HttpPost]
         public IActionResult RemoveFavorita(int idUsuario, int idMusica)
         {
-            var client = _httpClientFactory.CreateClient();
-            var response = client.DeleteAsync($"http://localhost:5206/api/Usuario/{idUsuario}/Favorita/{idMusica}").Result;
+            HttpResponseMessage? response = _apiClient.RemoveFavorita(idUsuario, idMusica);
+
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", new { id = idUsuario });
