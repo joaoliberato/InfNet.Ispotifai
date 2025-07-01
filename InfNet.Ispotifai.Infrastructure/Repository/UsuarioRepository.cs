@@ -1,5 +1,6 @@
 ﻿using InfNet.Ispotifai.Domain;
 using InfNet.Ispotifai.Domain.Repository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,9 @@ namespace InfNet.Ispotifai.Infrastructure.Repository
         public Usuario ObterPorId(int id)
         {
             return _context.Usuario
-                .FirstOrDefault(u => u.IdUsuario == id);
+                .Where(u => u.IdUsuario == id)
+                .Include(u => u.Favoritas)
+                .FirstOrDefault();
         }
 
         public void Salvar(Usuario usuario)
