@@ -19,10 +19,10 @@ namespace InfNet.Ispotifai.Application
             _musicaRepository = musicaRepository;
         }
 
-        public UsuarioDto ObterPerfil(int id)
+        public UsuarioDto ObterPerfil(int id, string search)
         {
             var usuario = _usuarioRepository.ObterPorId(id);
-            var musicas = _musicaRepository.ObterMusicas();
+            var musicas = _musicaRepository.ObterMusicas(search);
 
             var result = new UsuarioDto
             {

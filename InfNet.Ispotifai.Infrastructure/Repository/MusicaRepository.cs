@@ -16,9 +16,15 @@ namespace InfNet.Ispotifai.Infrastructure.Repository
             this._context = context;
         }
 
-        public IEnumerable<Musica> ObterMusicas()
+        public IEnumerable<Musica> ObterMusicas(string search)
         {
-            return _context.Musica.ToList();
+            var query = _context.Musica.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(m => m.Nome.Contains(search) || m.Artista.Contains(search) || m.Album.Contains(search));
+            }
+
+            return query.ToList();
         }
 
         public Musica ObterPorId(int idMusica)

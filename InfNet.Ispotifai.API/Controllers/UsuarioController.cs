@@ -18,9 +18,9 @@ namespace InfNet.Ispotifai.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(int id, string search = "")
         {
-            UsuarioDto usuario = new PerfilDoUsuarioService(_usuarioRepository, _musicaRepository).ObterPerfil(id);
+            UsuarioDto usuario = new PerfilDoUsuarioService(_usuarioRepository, _musicaRepository).ObterPerfil(id, search);
 
             return Ok(usuario);
         }

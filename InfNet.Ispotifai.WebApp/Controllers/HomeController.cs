@@ -15,9 +15,9 @@ namespace InfNet.Ispotifai.WebApp.Controllers
             _apiClient = apiClient;
         }
 
-        private HomeIndexModel GetHomeIndexModel(int id)
+        private HomeIndexModel GetHomeIndexModel(int id, string search = "")
         {
-            UsuarioResponse response = _apiClient.GetUsuarioById(id);
+            UsuarioResponse response = _apiClient.GetUsuarioById(id, search);
             var result = new HomeIndexModel();
 
             if (response is null)
@@ -77,6 +77,12 @@ namespace InfNet.Ispotifai.WebApp.Controllers
                 return RedirectToAction("Index", new { id = idUsuario });
             }
             return View("Error", new ErrorViewModel { RequestId = "Erro ao remover música favorita." });
+        }
+
+        public IActionResult Search(int id, string search)
+        {
+            var model = GetHomeIndexModel(id, search);
+            return View("Index", model);
         }
     }
 }

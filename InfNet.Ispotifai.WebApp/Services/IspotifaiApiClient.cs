@@ -18,9 +18,9 @@ namespace InfNet.Ispotifai.WebApp.Services
             return _httpClient.PostAsync($"Usuario/{idUsuario}/Favorita/{idMusica}", null).Result;
         }
 
-        internal UsuarioResponse GetUsuarioById(int id)
+        internal UsuarioResponse GetUsuarioById(int id, string search)
         {
-            return _httpClient.GetFromJsonAsync<UsuarioResponse>($"Usuario/{id}").Result;
+            return _httpClient.GetFromJsonAsync<UsuarioResponse>($"Usuario/{id}/?search={search}").Result;
 
         }
 

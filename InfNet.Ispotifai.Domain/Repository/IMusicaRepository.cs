@@ -8,7 +8,7 @@ namespace InfNet.Ispotifai.Domain.Repository
 {
     public interface IMusicaRepository
     {
-        IEnumerable<Musica> ObterMusicas();
+        IEnumerable<Musica> ObterMusicas(string search);
         Musica ObterPorId(int idMusica);
     }
 }
