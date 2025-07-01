@@ -19,7 +19,7 @@ namespace InfNet.Ispotifai.Infrastructure.Repository
         public Usuario ObterPorEmail(string email)
         {
             return _context.Usuario
-                 .FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+                 .FirstOrDefault(u => u.Email == email);
         }
 
         public Usuario ObterPorId(int id)

@@ -7,7 +7,7 @@ namespace InfNet.Ispotifai.Domain
         public string Email { get; set; }
         public string Senha { get; set; }
         public Plano Plano { get; set; }
-        public List<Musica> Favoritas { get; set; } = [];
+        public virtual List<Musica> Favoritas { get; set; } = [];
 
         public void RemoveFavorita(int idMusica)
         {

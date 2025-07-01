@@ -26,7 +26,7 @@ namespace InfNet.Ispotifai.Infrastructure
             modelBuilder.Entity<Usuario>()
                 .HasMany(u => u.Favoritas)
                 .WithMany();
-            
+
             modelBuilder.Entity<Usuario>()
                 .HasOne(u => u.Plano)
                 .WithMany()

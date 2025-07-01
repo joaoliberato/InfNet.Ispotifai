@@ -26,7 +26,8 @@ namespace InfNet.Ispotifai.Application
                 throw new InvalidOperationException("Dados inválidos. Verifique o email, as senhas e o plano.");
             }
 
-            Usuario usuario = _usuarioRepository.ObterPorEmail(email);
+            Usuario usuario = _usuarioRepository.ObterPorEmail(email) ?? new Usuario();
+            usuario.Email = email;
             usuario.Plano = _planoRepository.ObterPorId(plano);
             usuario.Senha = password;
             _usuarioRepository.Salvar(usuario);
